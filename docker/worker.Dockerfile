@@ -18,12 +18,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN mkdir -p /workspace/data
 
 # Copy code
-COPY worker/app /app/app
+COPY worker/app /app/worker_app
 COPY parser /app/parser
-COPY backend/app /backend/app
+COPY backend/app /app/app
 
-# Set PYTHONPATH to search in /backend as well
-ENV PYTHONPATH="/app:/backend:${PYTHONPATH}"
+# Set PYTHONPATH to search inside workspace
+ENV PYTHONPATH="/app:${PYTHONPATH}"
 
 # Command to run worker
-CMD ["celery", "-A", "app.celery_app", "worker", "--loglevel=info", "-P", "solo"]
+CMD ["celery", "-A", "worker_app.celery_app", "worker", "--loglevel=info", "-P", "solo"]

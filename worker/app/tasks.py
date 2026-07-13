@@ -60,7 +60,7 @@ def get_embedding_model():
         print(f"Failed to load sentence-transformer model: {e}")
         return None
 
-@shared_task(bind=True, name="app.tasks.clone_and_index_repository")
+@shared_task(bind=True, name="worker_app.tasks.clone_and_index_repository")
 def clone_and_index_repository(self, repo_id: str):
     """
     Main background processing pipeline:

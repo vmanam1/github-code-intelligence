@@ -7,7 +7,7 @@ celery_app = Celery(
     "code_intelligence_tasks",
     broker=REDIS_URL,
     backend=REDIS_URL,
-    include=["app.tasks"]
+    include=["worker_app.tasks"]
 )
 
 # Standard celery configuration

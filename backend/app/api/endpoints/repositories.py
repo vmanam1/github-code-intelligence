@@ -28,7 +28,7 @@ def import_repository(payload: RepositoryCreate, db: Session = Depends(get_db)):
         if existing_repo.status in ("FAILED", "COMPLETED"):
             existing_repo.status = "PENDING"
             db.commit()
-            celery_client.send_task("app.tasks.clone_and_index_repository", args=[existing_repo.id])
+            celery_client.send_task("worker_app.tasks.clone_and_index_repository", args=[existing_repo.id])
             return existing_repo
         return existing_repo
 
@@ -41,7 +41,7 @@ def import_repository(payload: RepositoryCreate, db: Session = Depends(get_db)):
     
     # Trigger Celery background task
     try:
-        celery_client.send_task("app.tasks.clone_and_index_repository", args=[repo.id])
+        celery_client.send_task("worker_app.tasks.clone_and_index_repository", args=[repo.id])
     except Exception as e:
         print(f"Failed to queue celery task: {e}")
         # Mark as FAILED immediately if Celery is down
@@ -74,7 +74,7 @@ def reindex_repository(id: str, db: Session = Depends(get_db)):
     db.commit()
     
     try:
-        celery_client.send_task("app.tasks.clone_and_index_repository", args=[repo.id])
+        celery_client.send_task("worker_app.tasks.clone_and_index_repository", args=[repo.id])
     except Exception as e:
         RepositoryService.update_status(db, repo.id, "FAILED", f"Celery connection failed: {e}")
         
