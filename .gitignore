@@ -1,0 +1,30 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+ENV/
+
+# Node/React build & dependencies
+node_modules/
+dist/
+dist-ssr/
+*.local
+.eslintcache
+
+# Local data & configuration
+.env
+data/
+db_data/
+redis_data/
+opensearch_data/
+ollama_data/
+
+# OS files
+.DS_Store
+Thumbs.db
