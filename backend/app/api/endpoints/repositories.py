@@ -111,3 +111,27 @@ def delete_repository(id: str, db: Session = Depends(get_db)):
         print(f"Failed to delete OpenSearch index: {e}")
 
     return {"detail": "Repository deleted successfully"}
+
+@router.get("/{id}/file")
+def get_repository_file(id: str, path: str, db: Session = Depends(get_db)):
+    """Retrieve file content from disk safely, validating path containment."""
+    repo = RepositoryService.get_repository(db, id)
+    if not repo or not repo.clone_path:
+        raise HTTPException(status_code=404, detail="Repository clone path not set or repository not found")
+        
+    # Standard security check for path traversal
+    base_dir = os.path.abspath(repo.clone_path)
+    target_path = os.path.abspath(os.path.join(base_dir, path))
+    
+    if not target_path.startswith(base_dir):
+        raise HTTPException(status_code=403, detail="Path traversal forbidden")
+        
+    if not os.path.exists(target_path):
+        raise HTTPException(status_code=404, detail="File not found")
+        
+    try:
+        with open(target_path, "r", encoding="utf-8", errors="ignore") as f:
+            content = f.read()
+        return {"content": content}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to read file contents: {e}")
