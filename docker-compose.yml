@@ -54,9 +54,9 @@ services:
       - opensearch_data:/usr/share/opensearch/data
     healthcheck:
       test: ["CMD-SHELL", "curl -s http://localhost:9200 >/dev/null || exit 1"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
+      interval: 10s
+      timeout: 10s
+      retries: 10
 
   ollama:
     image: ollama/ollama:latest
