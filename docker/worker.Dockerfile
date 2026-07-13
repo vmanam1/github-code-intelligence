@@ -19,7 +19,7 @@ RUN mkdir -p /workspace/data
 
 # Copy code
 COPY worker/app /app/app
-COPY parser /parser
+COPY parser /app/parser
 COPY backend/app /backend/app
 
 # Set PYTHONPATH to search in /backend as well

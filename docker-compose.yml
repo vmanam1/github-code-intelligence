@@ -73,7 +73,7 @@ services:
     container_name: gcip-backend
     volumes:
       - ./backend:/app
-      - ./parser:/parser
+      - ./parser:/app/parser
       - shared_data:${DATA_DIR:-/workspace/data}
     environment:
       - DATABASE_URL=postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db:5432/${POSTGRES_DB:-code_intelligence}
@@ -102,7 +102,7 @@ services:
     container_name: gcip-worker
     volumes:
       - ./worker:/app
-      - ./parser:/parser
+      - ./parser:/app/parser
       - ./backend:/backend
       - shared_data:${DATA_DIR:-/workspace/data}
     environment:

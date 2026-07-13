@@ -19,7 +19,7 @@ RUN mkdir -p /workspace/data
 
 # Copy code
 COPY backend/app /app/app
-COPY parser /parser
+COPY parser /app/parser
 
 # Command to run backend
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
